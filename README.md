@@ -1,4 +1,3 @@
-```markdown
 # Strapi Project Setup
 
 ## Task Overview
@@ -11,7 +10,7 @@ To quickly get a Strapi project running, I used the following command to create 
 
 ```bash
 npx create-strapi-app my-strapi-app --quickstart
-```
+
 
 This command:
 - Creates a new Strapi project named `my-strapi-app`.
