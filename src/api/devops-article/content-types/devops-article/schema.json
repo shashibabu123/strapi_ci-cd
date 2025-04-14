@@ -1,0 +1,24 @@
+{
+  "kind": "collectionType",
+  "collectionName": "devops_articles",
+  "info": {
+    "singularName": "devops-article",
+    "pluralName": "devops-articles",
+    "displayName": "Devops Article",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "Article": {
+      "type": "text"
+    },
+    "Score": {
+      "type": "boolean"
+    },
+    "Description": {
+      "type": "blocks"
+    }
+  }
+}
