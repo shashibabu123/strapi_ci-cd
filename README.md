@@ -26,3 +26,4 @@ Open [http://localhost:1337](http://localhost:1337) in our browser.
 - Strapi v5.12.4
 - Node.js v22.14.0
 - SQLite
+# strapi--Monitor-hub
