@@ -53,7 +53,4 @@ I have documented the steps I followed in this README file for reference.
 
 ## Conclusion
 This task involved setting up Strapi locally, exploring its structure, creating a sample content type, and pushing the setup to GitHub. The process was simple using the `npx create-strapi-app` command and the Strapi admin panel.
-```
-
----
 
