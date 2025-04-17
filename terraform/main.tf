@@ -3,9 +3,9 @@ provider "aws" {
 }
 
 resource "aws_instance" "strapi_ec2" {
-  ami           = "ami-0c02fb55956c7d316"  # Ubuntu AMI (adjust if needed)
+  ami           = "ami-0c02fb55956c7d316"  
   instance_type = "t2.micro"
-  key_name      = "your-key-name"
+  key_name      = "strapi-key-"
 
   user_data = file("${path.module}/user-data.sh")
 
