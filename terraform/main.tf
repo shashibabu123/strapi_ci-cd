@@ -4,41 +4,48 @@ provider "aws" {
   secret_key = var.aws_secret_key_id
 }
 
+resource "aws_key_pair" "deployer_key" {
+  key_name   = "deployer-key"
+  public_key = file("~/.ssh/id_rsa.pub")  # 👈 Replace path if needed
+}
+
+resource "aws_security_group" "strapi_sg" {
+  name        = "strapi-sg"
+  description = "Allow SSH and HTTP access"
+
+  ingress {
+    description = "SSH"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]  # You can restrict to your IP for security
+  }
+
+  ingress {
+    description = "Strapi App"
+    from_port   = 1337
+    to_port     = 1337
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
 resource "aws_instance" "strapi_ec2" {
-  ami           = var.ami_id
-  instance_type = "t3.medium"
-  user_data     = file("user_data.sh")
+  ami                    = var.ami_id
+  instance_type          = "t3.medium"
+  key_name               = aws_key_pair.deployer_key.key_name
+  vpc_security_group_ids = [aws_security_group.strapi_sg.id]
+  user_data              = file("user_data.sh")
 
   tags = {
     Name = "StrapiApp"
   }
-
-  # Enable SSM access
-  iam_instance_profile = aws_iam_instance_profile.ec2_ssm.name
-}
-
-resource "aws_iam_role" "ec2_ssm_role" {
-  name = "ec2_ssm_role"
-
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17",
-    Statement = [{
-      Action    = "sts:AssumeRole",
-      Effect    = "Allow",
-      Principal = {
-        Service = "ec2.amazonaws.com"
-      }
-    }]
-  })
-}
-
-resource "aws_iam_role_policy_attachment" "ssm_attach" {
-  role       = aws_iam_role.ec2_ssm_role.name
-  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
-}
-
-resource "aws_iam_instance_profile" "ec2_ssm" {
-  name = "ec2_ssm_profile"
-  role = aws_iam_role.ec2_ssm_role.name
 }
 
