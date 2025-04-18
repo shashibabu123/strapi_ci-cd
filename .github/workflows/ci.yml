@@ -1,0 +1,32 @@
+name: CI - Build and Push Docker Image
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: Build Docker Image
+        run: |
+          IMAGE_NAME=shashikumar025/strapi-app
+          IMAGE_TAG=latest
+          docker build -t $IMAGE_NAME:$IMAGE_TAG .
+          echo "IMAGE_TAG=$IMAGE_TAG" >> $GITHUB_ENV
+
+      - name: Push Docker Image
+        run: |
+          docker push shashikumar025/strapi-app:$IMAGE_TAG
+
+      - name: Save Image Tag as Output
+        id: image_tag
+        run: echo "::set-output name=tag::$IMAGE_TAG"
+

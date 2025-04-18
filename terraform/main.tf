@@ -1,42 +1,44 @@
 provider "aws" {
-  region = "us-east-1"
+  region     = var.aws_region
+  access_key = var.aws_access_key
+  secret_key = var.aws_secret_key
 }
 
 resource "aws_instance" "strapi_ec2" {
-  ami           = "ami-053b0d53c279acc90"  
-  instance_type = "t3.micro"
-  key_name      = "strapi-key"
-
-  user_data = file("${path.module}/user-data.sh")
+  ami           = var.ami_id
+  instance_type = "t3.medium"
+  user_data     = file("user_data.sh")
 
   tags = {
-    Name = "StrapiEC2"
+    Name = "StrapiApp"
   }
+
+  # Enable SSM access
+  iam_instance_profile = aws_iam_instance_profile.ec2_ssm.name
 }
 
-resource "aws_security_group" "strapi_sg" {
-  name        = "strapi-sg-"
-  description = "Allow port 1337"
+resource "aws_iam_role" "ec2_ssm_role" {
+  name = "ec2_ssm_role"
 
-  ingress {
-    from_port   = 1337
-    to_port     = 1337
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-    ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = [var.allowed_ip]
-  }
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [{
+      Action    = "sts:AssumeRole",
+      Effect    = "Allow",
+      Principal = {
+        Service = "ec2.amazonaws.com"
+      }
+    }]
+  })
+}
 
+resource "aws_iam_role_policy_attachment" "ssm_attach" {
+  role       = aws_iam_role.ec2_ssm_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+}
 
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
+resource "aws_iam_instance_profile" "ec2_ssm" {
+  name = "ec2_ssm_profile"
+  role = aws_iam_role.ec2_ssm_role.name
 }
 
