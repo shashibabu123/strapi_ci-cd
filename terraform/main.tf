@@ -6,7 +6,7 @@ provider "aws" {
 
 resource "aws_key_pair" "deployer_key" {
   key_name   = "deployer-key"
-  public_key = file("~/.ssh/id_rsa.pub")  # 👈 Replace path if needed
+  public_key = file("${path.module}/deployer_key.pub")
 }
 
 resource "aws_security_group" "strapi_sg" {
