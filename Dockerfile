@@ -11,7 +11,7 @@ RUN npm install
 # Copy Strapi source code
 COPY . .
 
-# ✅ Set app keys for Strapi (needed by config/server.js)
+# Set app keys for Strapi (needed by config/server.js)
 ENV APP_KEYS=myKeyA,myKeyB
 
 # Build admin panel
