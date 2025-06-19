@@ -1,6 +1,6 @@
 npm run build
 
-# or# 🚀 Getting started with Strapi
+# or#  Getting started with Strapi
 
 Strapi comes with a full featured [Command Line Interface](https://docs.strapi.io/dev-docs/cli) (CLI) which lets you scaffold and manage your project in seconds.
 
@@ -30,7 +30,7 @@ Build your admin panel. [Learn more](https://d
 yarn build
 
 
-## ⚙️ Deployment
+## ⚙ Deployment
 
 Strapi gives you many possible deployment options for your project including [Strapi Cloud](https://cloud.strapi.io). Browse the [deployment section of the documentation](https://docs.strapi.io/dev-docs/deployment) to find the best solution for your use case.
 
@@ -38,7 +38,7 @@ Strapi gives you many possible deployment options for your project including [St
 yarn strapi deploy
 
 
-## 📚 Learn more
+##  Learn more
 
 - [Resource center](https://strapi.io/resource-center) - Strapi resource center.
 - [Strapi documentation](https://docs.strapi.io) - Official Strapi documentation.
@@ -56,6 +56,5 @@ Feel free to check out the [Strapi GitHub repository](https://github.com/strapi/
 
 ---
 
-<sub>🤫 Psst! [Strapi is hiring](https://strapi.io/careers).</sub>
-# strapi--Monitor-hub
+
  
